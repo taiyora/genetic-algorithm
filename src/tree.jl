@@ -8,7 +8,7 @@ will return the value 16 when evaluated.
 Of course, any child may also be an operator; in this way, complex expressions can be built.
 """
 module TreeNode
-	# A node can function as either a value, or an operator on its children (e.g. '+')
+	"A node can function as either a value, or an operator on its children (e.g. `+`)."
 	Function = Union{Int, Char}
 
 	type Node
@@ -16,7 +16,8 @@ module TreeNode
 		children::Vector{Node}
 	end
 
-	Node() = Node(0, Vector{Node}())
+	Node()                = Node(0,     Vector{Node}())
+	Node(valOp::Function) = Node(valOp, Vector{Node}())
 
 	function setValue(node::Node, value::Int)
 		@assert isLeaf(node) # Only a leaf can be a value; a parent must be an operator
@@ -39,5 +40,29 @@ module TreeNode
 
 	function isOperator(node::Node)::Bool
 		return typeof(node.valOp) == Char
+	end
+end
+
+"""
+The Tree module contains methods dealing with Trees as a whole.
+This includes printing, generation, and evaluation.
+"""
+module Tree
+	using TreeNode
+
+	"Given a root node (or any node in fact), will print the tree as a nested expression."
+	function printTree(node::TreeNode.Node)
+		if typeof(node.valOp) == Int
+			print(node.valOp, ' ')
+		
+		else
+			print('(', node.valOp, ' ')
+
+			for child in node.children
+				printTree(child)
+			end
+
+			print(')')
+		end
 	end
 end

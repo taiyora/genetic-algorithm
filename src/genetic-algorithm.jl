@@ -1,4 +1,4 @@
 include("tree.jl")
-using TreeNode
+using TreeNode, Tree
 
 root = TreeNode.Node()
